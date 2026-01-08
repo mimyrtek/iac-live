@@ -11,6 +11,6 @@ resource "kubernetes_config_map" "proof" {
   }
 }
 
-output "configmap_name" {
-  value = kubernetes_config_map.proof.metadata[0].name
-}
+# output "configmap_name" {
+#   value = kubernetes_config_map.proof.metadata[0].name
+# }
