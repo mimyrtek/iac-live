@@ -1,19 +1,22 @@
-terraform {
-  backend "s3" {
-    bucket = "tfstate"
-    key    = "dev/sandbox/terraform.tfstate"
-
-    # MinIO (S3-compatible) in-cluster
-    endpoint = "http://minio-tfstate.tf-state.svc.cluster.local:9000"
-    region   = "us-east-1"
-
-    # MinIO/S3 compatibility flags
-    force_path_style            = true
-    skip_credentials_validation = true
-    skip_metadata_api_check     = true
-    skip_region_validation      = true
-
-    # If you later add TLS in front of MinIO, flip this to false and use https://
-    insecure = true
+resource "kubernetes_namespace" "sandbox" {
+  metadata {
+    name = "sandbox-dev"
   }
+}
+
+resource "kubernetes_config_map" "proof" {
+  metadata {
+    name      = "iac-proof"
+    namespace = kubernetes_namespace.sandbox.metadata[0].name
+  }
+
+  data = {
+    message   = "Hello from Terraform via Jenkins + MinIO backend"
+    env       = "dev"
+    timestamp = timestamp()
+  }
+}
+
+output "configmap_name" {
+  value = kubernetes_config_map.proof.metadata[0].name
 }

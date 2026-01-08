@@ -8,11 +8,11 @@ terraform {
       s3 = "http://minio-tfstate.tf-state.svc.cluster.local:9000"
     }
 
-    # MinIO compatibility
+    # MinIO / S3 compatibility
     force_path_style = true
     insecure         = true
 
-    # Prevent AWS lookups (STS/IAM/metadata)
+    # Disable AWS-specific calls (STS / IAM / metadata)
     skip_credentials_validation = true
     skip_requesting_account_id  = true
     skip_metadata_api_check     = true
