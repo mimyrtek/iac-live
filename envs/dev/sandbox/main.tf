@@ -1,13 +1,7 @@
-resource "kubernetes_namespace" "sandbox" {
-  metadata {
-    name = "sandbox-dev"
-  }
-}
-
 resource "kubernetes_config_map" "proof" {
   metadata {
     name      = "iac-proof"
-    namespace = kubernetes_namespace.sandbox.metadata[0].name
+    namespace = "jenkins-dev"  # or "sandbox-dev" if pre-created
   }
 
   data = {
